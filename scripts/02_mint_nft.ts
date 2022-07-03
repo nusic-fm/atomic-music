@@ -8,11 +8,11 @@ async function main() {
   const [owner, add1] = await ethers.getSigners();
 
   const AtomicMusicNFT:AtomicMusicNFT__factory = await ethers.getContractFactory("AtomicMusicNFT");
-  const atomicMusicNFT:AtomicMusicNFT = await AtomicMusicNFT.attach("0x5293EA6E7E0a28964Fbf43A6313C7CD0C33c49c7");
+  const atomicMusicNFT:AtomicMusicNFT = await AtomicMusicNFT.attach("0xC57d6963f184Bff298d38b47276C0ECe1199f76c");
   
   console.log("AtomicMusicNFT Address:", atomicMusicNFT.address);
 
-  const txt1:ContractTransaction = await atomicMusicNFT.mint(5);
+  const txt1:ContractTransaction = await atomicMusicNFT.mint(owner.address,8,0,"");
   console.log("NFT mint Transaction Hash = ", txt1.hash);
   const txtReceipt:ContractReceipt = await txt1.wait();
   console.log("NFT mint Transaction Receipt = ", txtReceipt);
