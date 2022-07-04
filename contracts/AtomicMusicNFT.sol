@@ -35,6 +35,7 @@ contract AtomicMusicNFT is ERC721Enumerable, AtomicMusicCore, Ownable {
 
     mapping(uint256 => NftOwner) private _nftOwners;
     mapping(uint256 => Child[]) private _children;
+    uint256[] public rootTokens;
 
     event ParentRemoved(address parentAddress, uint parentTokenId, uint childTokenId);
     event ChildRemoved(address childAddress, uint parentTokenId, uint childTokenId);
@@ -62,7 +63,7 @@ contract AtomicMusicNFT is ERC721Enumerable, AtomicMusicCore, Ownable {
 
     function nftOwnerOf(uint256 tokenId) public view override returns (address, uint256) {
         NftOwner memory owner = _nftOwners[tokenId];
-        require(owner.contractAddress != address(0), "ERC721: owner query for nonexistent token");
+        //require(owner.contractAddress != address(0), "ERC721: owner query for nonexistent token");
         return (owner.contractAddress, owner.tokenId);
     }
 
@@ -150,11 +151,12 @@ contract AtomicMusicNFT is ERC721Enumerable, AtomicMusicCore, Ownable {
     function mint(address to, uint256 tokenId, uint256 destId, string memory _data) public virtual {
 
         //Gas saving here from string > bytes?
-        if (keccak256(bytes(_data)) == keccak256(bytes("NEST"))) {
+        if (keccak256(bytes(_data)) == _nestFlag) {
             _mintNest(to, tokenId, destId);
         }
         else{
             _safeMint(to, tokenId);
+            rootTokens.push(tokenId);
         }
     }
 
