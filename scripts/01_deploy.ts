@@ -8,9 +8,14 @@ async function main() {
   const [owner, add1] = await ethers.getSigners();
 
   const AtomicMusicNFT:AtomicMusicNFT__factory = await ethers.getContractFactory("AtomicMusicNFT");
-  const atomicMusicNFT:AtomicMusicNFT = await AtomicMusicNFT.deploy("ipfs://QmXsMLpKjznF3z1KsVm5tNs3E94vj4BFAyAHvD5RTWgQ1J");
+  //https://gateway.pinata.cloud/ipfs/QmNZucC5ZvPxsoEr3Zw88HoR1MorEFPCojTV1kYfr9w59K
+  //https://gateway.pinata.cloud/ipfs/QmXDP6iiTwFTUEWaV8NizypmNnnXfbqvgjB3hQnUygnBQB // new one
+  const minPrice = ethers.utils.parseEther("0.04");
+  const maxPrice = ethers.utils.parseEther("0.09");
+  const atomicMusicNFT:AtomicMusicNFT = await AtomicMusicNFT.deploy("NoAirMusic","NANFT",minPrice, maxPrice,"https://gateway.pinata.cloud/ipfs/QmXDP6iiTwFTUEWaV8NizypmNnnXfbqvgjB3hQnUygnBQB/");
+  //const atomicMusicNFT:AtomicMusicNFT = await AtomicMusicNFT.deploy("TempMUSIC","TMNFT","https://gateway.pinata.cloud/ipfs/QmNZucC5ZvPxsoEr3Zw88HoR1MorEFPCojTV1kYfr9w59K/");
   await atomicMusicNFT.deployed();
-
+  //"AtomicMusicNFT","AMNFT"
   console.log("AtomicMusicNFT deployed to:", atomicMusicNFT.address);
   //0xC57d6963f184Bff298d38b47276C0ECe1199f76c
 }
