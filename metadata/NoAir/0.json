@@ -1,24 +1,36 @@
 {
-    "name": "No Air",
-    "description": "Music of No Air",
+    "name": "No Air - Jordin Sparks, Chris Brown",
+    "description": "No Air - Jordin Sparks, Chris Brown",
     "image": "https://gateway.pinata.cloud/ipfs/QmQ2LLVt3ZWuZ5aNX7tM43YfY4ZJF8ptHwtyJ6M9yTX6rt",
     "animation_url":"https://gateway.pinata.cloud/ipfs/QmQ2LLVt3ZWuZ5aNX7tM43YfY4ZJF8ptHwtyJ6M9yTX6rt",
     "attributes": [
         {
+            "trait_type": "title",
+            "value": "No Air - Jordin Sparks, Chris Brown"
+        },
+        {
+            "trait_type": "Album",
+            "value": "Mystery of the Floating Pagoda"
+        },
+        {
+            "trait_type": "Genre",
+            "value": "Pop"
+        },
+        {
+            "trait_type": "BPM",
+            "value": "160"
+        },
+        {
+            "trait_type": "Key",
+            "value": "A♭ minor"
+        },
+        {
+            "trait_type": "Time Signature",
+            "value": "4/4"
+        },
+        {
             "trait_type": "Type",
             "value": "Full Track"
-        },
-        {
-            "trait_type": "Name",
-            "value": "No Air"
-        },
-        {
-            "trait_type": "Singer",
-            "value": "XYZ"
-        },
-        {
-            "trait_type": "Composer",
-            "value": "ABC"
         }
     ]
 }

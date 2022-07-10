@@ -1,24 +1,36 @@
 {
-    "name": "No Air - Section 9",
-    "description": "Music of No Air - Section 9",
+    "name": "No Air - Jordin Sparks, Chris Brown - Post-Chorus",
+    "description": "No Air - Jordin Sparks, Chris Brown - Post-Chorus",
     "image": "https://gateway.pinata.cloud/ipfs/QmQ2LLVt3ZWuZ5aNX7tM43YfY4ZJF8ptHwtyJ6M9yTX6rt",
     "animation_url":"https://gateway.pinata.cloud/ipfs/QmQ2LLVt3ZWuZ5aNX7tM43YfY4ZJF8ptHwtyJ6M9yTX6rt",
     "attributes": [
         {
+            "trait_type": "title",
+            "value": "No Air - Jordin Sparks, Chris Brown"
+        },
+        {
+            "trait_type": "Album",
+            "value": "Mystery of the Floating Pagoda"
+        },
+        {
+            "trait_type": "Genre",
+            "value": "Pop"
+        },
+        {
+            "trait_type": "BPM",
+            "value": "160"
+        },
+        {
+            "trait_type": "Key",
+            "value": "A♭ minor"
+        },
+        {
+            "trait_type": "Time Signature",
+            "value": "4/4"
+        },
+        {
             "trait_type": "Type",
-            "value": "Section 9"
-        },
-        {
-            "trait_type": "Name",
-            "value": "No Air"
-        },
-        {
-            "trait_type": "Singer",
-            "value": "XYZ"
-        },
-        {
-            "trait_type": "Composer",
-            "value": "ABC"
+            "value": "Post-Chorus"
         }
     ]
 }
