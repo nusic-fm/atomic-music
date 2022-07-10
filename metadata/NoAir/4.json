@@ -1,0 +1,24 @@
+{
+    "name": "No Air - Section 4",
+    "description": "Music of No Air - Section 4",
+    "image": "https://gateway.pinata.cloud/ipfs/QmQ2LLVt3ZWuZ5aNX7tM43YfY4ZJF8ptHwtyJ6M9yTX6rt",
+    "animation_url":"https://gateway.pinata.cloud/ipfs/QmQ2LLVt3ZWuZ5aNX7tM43YfY4ZJF8ptHwtyJ6M9yTX6rt",
+    "attributes": [
+        {
+            "trait_type": "Type",
+            "value": "Section 4"
+        },
+        {
+            "trait_type": "Name",
+            "value": "No Air"
+        },
+        {
+            "trait_type": "Singer",
+            "value": "XYZ"
+        },
+        {
+            "trait_type": "Composer",
+            "value": "ABC"
+        }
+    ]
+}
