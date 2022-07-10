@@ -44,9 +44,12 @@ contract AtomicMusicNFT is ERC721Pausable, Ownable {
     address public admin;
     address public manager;
 
-    uint256 public price = 50e15; 
+    uint256 public minPrice = 50e15; // 0.05
+    uint256 public maxPrice = 100e15; // 0.1
 
-    constructor(string memory _name, string memory _symbol, string memory _defaultURI) ERC721(_name,_symbol){
+    constructor(string memory _name, string memory _symbol, uint256 _minPrice, uint256 _maxPrice, string memory _defaultURI) ERC721(_name,_symbol){
+        minPrice = _minPrice;
+        maxPrice = _maxPrice;
         defaultURI = _defaultURI;
         baseURI = _defaultURI;
     }
@@ -91,7 +94,7 @@ contract AtomicMusicNFT is ERC721Pausable, Ownable {
         require(!_exists(tokenId), "ERC721: token already minted");
         require(_rootTokens[tokenId], "Token Id is not for Root token");
         require(!isChildMinted(tokenId), "Child has already been minted for this token");
-        require(price == msg.value, "Insufficient Funds Sent" );
+        require(msg.value >= minPrice && msg.value <= maxPrice, "Insufficient Funds Sent" );
         _safeMint(msg.sender, tokenId);
         if(_rootTokens[tokenId]) {
             _rootTokenInfo[tokenId].isMinted = true;
@@ -103,7 +106,7 @@ contract AtomicMusicNFT is ERC721Pausable, Ownable {
         require(!_exists(tokenId), "ERC721: token already minted");
         require(!_exists(parentTokenId), "Parent token already minted");
         require(!isParentMinted(parentTokenId), "Parent has already been minted for this token");
-        require(price == msg.value, "Insufficient Funds Sent" );
+        require(msg.value >= minPrice && msg.value <= maxPrice, "Insufficient Funds Sent" );
 
         for (uint256 i = 0; i < _childrenMetadata[parentTokenId].length; i++) {
             if(_childrenMetadata[parentTokenId][i].tokenId == tokenId) {
@@ -162,8 +165,16 @@ contract AtomicMusicNFT is ERC721Pausable, Ownable {
         require(sent, "Failed to withdraw Ether");
     }
 
-    function setPrice(uint256 _price) public onlyOwner {
-        price = _price;
+    function setMinPrice(uint256 _minPrice) public onlyOwner {
+        minPrice = _minPrice;
+    }
+
+    function setMaxPrice(uint256 _maxPrice) public onlyOwner {
+        maxPrice = _maxPrice;
+    }
+
+    function tokenExists(uint256 tokenId) public view returns (bool) {
+        return _exists(tokenId);
     }
     
 }
