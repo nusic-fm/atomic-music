@@ -1,6 +1,6 @@
 import { BigNumber } from 'ethers';
 import { ethers } from 'hardhat';
-import { AtomicMusicNFT, AtomicMusicNFT__factory } from '../typechain';
+import { AtomicMusicNFT, AtomicMusicNFT__factory } from '../../typechain';
 /*
 * Main deployment script to deploy all the relevent contracts
 */
@@ -10,9 +10,8 @@ async function main() {
   const AtomicMusicNFT:AtomicMusicNFT__factory = await ethers.getContractFactory("AtomicMusicNFT");
   //https://gateway.pinata.cloud/ipfs/QmNZucC5ZvPxsoEr3Zw88HoR1MorEFPCojTV1kYfr9w59K
   //https://gateway.pinata.cloud/ipfs/QmXDP6iiTwFTUEWaV8NizypmNnnXfbqvgjB3hQnUygnBQB // new one
-  const minPrice = ethers.utils.parseEther("0.04");
-  const maxPrice = ethers.utils.parseEther("0.09");
-  const atomicMusicNFT:AtomicMusicNFT = await AtomicMusicNFT.deploy("NoAirMusic","NANFT",minPrice, maxPrice,"https://gateway.pinata.cloud/ipfs/QmXDP6iiTwFTUEWaV8NizypmNnnXfbqvgjB3hQnUygnBQB/");
+
+  const atomicMusicNFT:AtomicMusicNFT = await AtomicMusicNFT.deploy("YATTA","YNFT","https://gateway.pinata.cloud/ipfs/QmXDP6iiTwFTUEWaV8NizypmNnnXfbqvgjB3hQnUygnBQB/");
   //const atomicMusicNFT:AtomicMusicNFT = await AtomicMusicNFT.deploy("TempMUSIC","TMNFT","https://gateway.pinata.cloud/ipfs/QmNZucC5ZvPxsoEr3Zw88HoR1MorEFPCojTV1kYfr9w59K/");
   await atomicMusicNFT.deployed();
   //"AtomicMusicNFT","AMNFT"
