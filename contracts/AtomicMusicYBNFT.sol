@@ -94,17 +94,18 @@ contract AtomicMusicYBNFT is ERC721Pausable, Ownable {
         return _childrenMetadata[tokenId];
     }
 
-    function receiveFunds(address sender) private {
+    function receiveFunds(address sender, uint256 amount) private {
         uint256 allowance = USDC.allowance(sender, address(this));
-        require(allowance >= minPrice && allowance <= maxPrice,"Insufficient approval for funds");
+        require(allowance >= amount,"Insufficient approval for funds");
+        require(amount >= minPrice && amount <= maxPrice,"Insufficient Funds Sent");
         USDC.transferFrom(sender, address(this), (allowance));
     }
-    function mintRoot(uint256 tokenId) public payable {
+    function mintRoot(uint256 tokenId, uint256 amount) public payable {
         require(!_exists(tokenId), "ERC721: token already minted");
         require(_rootTokens[tokenId], "Token Id is not for Root token");
         require(!isChildMinted(tokenId), "Child has already been minted for this token");
         //require(msg.value >= minPrice && msg.value <= maxPrice, "Insufficient Funds Sent" );
-        receiveFunds(msg.sender);
+        receiveFunds(msg.sender, amount);
         _safeMint(msg.sender, tokenId);
         if(_rootTokens[tokenId]) {
             _rootTokenInfo[tokenId].isMinted = true;
@@ -112,12 +113,12 @@ contract AtomicMusicYBNFT is ERC721Pausable, Ownable {
         totalMinted++;
     }
 
-    function mint(uint256 tokenId, uint256 parentTokenId) public payable {
+    function mint(uint256 tokenId, uint256 parentTokenId, uint256 amount) public payable {
         require(!_exists(tokenId), "ERC721: token already minted");
         require(!_exists(parentTokenId), "Parent token already minted");
         require(!isParentMinted(parentTokenId), "Parent has already been minted for this token");
         //require(msg.value >= minPrice && msg.value <= maxPrice, "Insufficient Funds Sent" );
-        receiveFunds(msg.sender);
+        receiveFunds(msg.sender, amount);
         for (uint256 i = 0; i < _childrenMetadata[parentTokenId].length; i++) {
             if(_childrenMetadata[parentTokenId][i].tokenId == tokenId) {
                 _safeMint(msg.sender, tokenId);
