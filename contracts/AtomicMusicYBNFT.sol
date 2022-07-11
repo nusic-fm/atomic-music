@@ -45,14 +45,17 @@ contract AtomicMusicYBNFT is ERC721Pausable, Ownable {
     address public admin;
     address public manager;
 
-    uint256 public minPrice = 50e15; // 0.05
-    uint256 public maxPrice = 100e15; // 0.1
+    uint256 public minPrice = 1e5; // 0.1
+    uint256 public maxPrice = 5e5; // 0.5
+    
+    ERC20 public USDC;
 
-    constructor(string memory _name, string memory _symbol, uint256 _minPrice, uint256 _maxPrice, string memory _defaultURI) ERC721(_name,_symbol){
+    constructor(string memory _name, string memory _symbol, uint256 _minPrice, uint256 _maxPrice, address _usdcAddress, string memory _defaultURI) ERC721(_name,_symbol){
         minPrice = _minPrice;
         maxPrice = _maxPrice;
         defaultURI = _defaultURI;
         baseURI = _defaultURI;
+        USDC = ERC20(_usdcAddress);
     }
 
     function _baseURI() internal view virtual override returns (string memory) {
@@ -91,11 +94,17 @@ contract AtomicMusicYBNFT is ERC721Pausable, Ownable {
         return _childrenMetadata[tokenId];
     }
 
+    function receiveFunds(address sender) private {
+        uint256 allowance = USDC.allowance(sender, address(this));
+        require(allowance >= minPrice && allowance <= maxPrice,"Insufficient approval for funds");
+        USDC.transferFrom(sender, address(this), (allowance));
+    }
     function mintRoot(uint256 tokenId) public payable {
         require(!_exists(tokenId), "ERC721: token already minted");
         require(_rootTokens[tokenId], "Token Id is not for Root token");
         require(!isChildMinted(tokenId), "Child has already been minted for this token");
-        require(msg.value >= minPrice && msg.value <= maxPrice, "Insufficient Funds Sent" );
+        //require(msg.value >= minPrice && msg.value <= maxPrice, "Insufficient Funds Sent" );
+        receiveFunds(msg.sender);
         _safeMint(msg.sender, tokenId);
         if(_rootTokens[tokenId]) {
             _rootTokenInfo[tokenId].isMinted = true;
@@ -107,8 +116,8 @@ contract AtomicMusicYBNFT is ERC721Pausable, Ownable {
         require(!_exists(tokenId), "ERC721: token already minted");
         require(!_exists(parentTokenId), "Parent token already minted");
         require(!isParentMinted(parentTokenId), "Parent has already been minted for this token");
-        require(msg.value >= minPrice && msg.value <= maxPrice, "Insufficient Funds Sent" );
-
+        //require(msg.value >= minPrice && msg.value <= maxPrice, "Insufficient Funds Sent" );
+        receiveFunds(msg.sender);
         for (uint256 i = 0; i < _childrenMetadata[parentTokenId].length; i++) {
             if(_childrenMetadata[parentTokenId][i].tokenId == tokenId) {
                 _safeMint(msg.sender, tokenId);
@@ -162,8 +171,7 @@ contract AtomicMusicYBNFT is ERC721Pausable, Ownable {
     function withdraw() public onlyOwner {
         address ownerAddress = owner(); 
         require(ownerAddress != address(0),"NULL Address Provided");
-        (bool sent, ) = ownerAddress.call{value: address(this).balance}("");
-        require(sent, "Failed to withdraw Ether");
+        USDC.transfer(ownerAddress, USDC.balanceOf(address(this)));
     }
 
     function setMinPrice(uint256 _minPrice) public onlyOwner {
