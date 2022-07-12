@@ -11,9 +11,7 @@ async function main() {
   // USDC on moonriver
   //0xe3f5a90f9cb311505cd691a46596599aa1a0ad7d
   const AtomicMusicYBNFT:AtomicMusicYBNFT__factory = await ethers.getContractFactory("AtomicMusicYBNFT");
-  const minPrice = BigNumber.from(400000); // 0.4
-  const maxPrice = BigNumber.from(900000); // 0.9
-  const atomicMusicYBNFT:AtomicMusicYBNFT = await AtomicMusicYBNFT.deploy("NoAirMusic","NANFT",minPrice, maxPrice,addresses.usdcAddress ,"https://gateway.pinata.cloud/ipfs/QmXDP6iiTwFTUEWaV8NizypmNnnXfbqvgjB3hQnUygnBQB/");
+  const atomicMusicYBNFT:AtomicMusicYBNFT = await AtomicMusicYBNFT.deploy("NoAirMusic","NANFT", addresses.usdcAddress ,"https://gateway.pinata.cloud/ipfs/QmXDP6iiTwFTUEWaV8NizypmNnnXfbqvgjB3hQnUygnBQB/");
   await atomicMusicYBNFT.deployed();
   //"AtomicMusicNFT","AMNFT"
   console.log("AtomicMusicYBNFT deployed to:", atomicMusicYBNFT.address);

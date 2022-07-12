@@ -10,6 +10,7 @@ interface TokenInfo {
   tokenId: number;
   parentTokenId: number;
   isMinted:boolean;
+  price: BigNumber;
 }
 
 let tokenCounter = -1;
