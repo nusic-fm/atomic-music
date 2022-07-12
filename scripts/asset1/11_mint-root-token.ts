@@ -14,8 +14,8 @@ async function main() {
   const AtomicMusicNFT:AtomicMusicNFT__factory = await ethers.getContractFactory("AtomicMusicNFT");
   const atomicMusicNFT:AtomicMusicNFT = await AtomicMusicNFT.attach(addresses.nftAddress);
 
-  const amount = ethers.utils.parseEther("0.05");
-  const txt = await atomicMusicNFT.mintRoot(0, {value: amount});
+  const amount = ethers.utils.parseEther("0.4");
+  const txt = await atomicMusicNFT.mintRoot(10, {value: amount});
   console.log("mintRoot txt.hash = ",txt.hash);
   const txtReceipt = await txt.wait();
   console.log("mintRoot txt.hash = ",txtReceipt);

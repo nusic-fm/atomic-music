@@ -22,7 +22,7 @@ async function main() {
   const AtomicMusicNFT:AtomicMusicNFT__factory = await ethers.getContractFactory("AtomicMusicNFT");
   atomicMusicNFT = await AtomicMusicNFT.attach(addresses.nftAddress);
 
-  const childInfo = await atomicMusicNFT.getChildrenMetadata(0);
+  const childInfo = await atomicMusicNFT.getChildrenMetadata(1);
   console.log("_childrenInfo = ",childInfo);
   
 }
