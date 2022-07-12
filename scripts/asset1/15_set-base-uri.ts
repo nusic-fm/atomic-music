@@ -22,7 +22,7 @@ async function main() {
   const AtomicMusicNFT:AtomicMusicNFT__factory = await ethers.getContractFactory("AtomicMusicNFT");
   atomicMusicNFT = await AtomicMusicNFT.attach(addresses.nftAddress);
 
-  const txt = await atomicMusicNFT.setBaseURI("https://gateway.pinata.cloud/ipfs/QmNZucC5ZvPxsoEr3Zw88HoR1MorEFPCojTV1kYfr9w59K/");
+  const txt = await atomicMusicNFT.setBaseURI("https://gateway.pinata.cloud/ipfs/QmQ89xevkyDy1Nn99ennYEYRhXoswBkfafozqNdYhQT4PN/");
   console.log("set base uri txt.hash = ",txt.hash);
   const txtReceipt = await txt.wait();
   console.log("set base uri txt.hash = ",txtReceipt);

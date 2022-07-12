@@ -9,21 +9,26 @@ const addresses = require("./address.json");
 */
 let atomicMusicNFT:AtomicMusicNFT;
 
-interface TokenInfo {
-  tokenId: number;
-  parentTokenId: number;
-  isMinted:boolean;
-}
-
-
 async function main() {
   const [owner, add1] = await ethers.getSigners();
 
   const AtomicMusicNFT:AtomicMusicNFT__factory = await ethers.getContractFactory("AtomicMusicNFT");
   atomicMusicNFT = await AtomicMusicNFT.attach(addresses.nftAddress);
 
-  const tokenURI = await atomicMusicNFT.tokenURI(3);
-  console.log("tokenURI = ",tokenURI);
+  const balance = await owner.getBalance();
+  console.log("Balance = ", balance.toString());
+
+  const totalTokens = await atomicMusicNFT.totalTokens();
+  console.log("totalTokens = ",totalTokens.toString());
+
+  const totalMinted = await atomicMusicNFT.totalMinted();
+  console.log("totalMinted = ",totalMinted.toString());
+
+  const getPrice = await atomicMusicNFT.getPrice(3,1);
+  console.log("getPrice = ", ethers.utils.formatEther(getPrice.toString()));
+
+  const balanceContract = await ethers.provider.getBalance(atomicMusicNFT.address);
+  console.log("balanceContract in contract = ", balanceContract.toString());
 
 }
 

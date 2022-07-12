@@ -15,14 +15,11 @@ async function main() {
   const AtomicMusicNFT:AtomicMusicNFT__factory = await ethers.getContractFactory("AtomicMusicNFT");
   atomicMusicNFT = await AtomicMusicNFT.attach(addresses.nftAddress);
 
-  const balance = await owner.getBalance();
-  console.log("Balance = ", balance.toString());
-
-  const minPrice = await atomicMusicNFT.minPrice();
-  console.log("minPrice = ",minPrice.toString());
-
-  const maxPrice = await atomicMusicNFT.maxPrice();
-  console.log("maxPrice = ",maxPrice.toString());
+  const txt = await atomicMusicNFT.setPrice(4,1,ethers.utils.parseEther("0.01"));
+  //const txt = await atomicMusicNFT.setRootPrice(21,ethers.utils.parseEther("0.01"));
+  console.log("setPrice txt.hash = ",txt.hash);
+  const txtReceipt = await txt.wait();
+  console.log("setPrice txtReceipt = ",txtReceipt);
 
 }
 
