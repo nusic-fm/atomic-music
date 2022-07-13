@@ -25,7 +25,8 @@ async function main() {
   console.log("totalMinted = ",totalMinted.toString());
 
   const getPrice = await atomicMusicNFT.getPrice(3,1);
-  console.log("getPrice = ", ethers.utils.formatEther(getPrice.toString()));
+  console.log("getPrice formatted = ", ethers.utils.formatEther(getPrice.toString()));
+  console.log("getPrice = ", getPrice.toString());
 
   const balanceContract = await ethers.provider.getBalance(atomicMusicNFT.address);
   console.log("balanceContract in contract = ", balanceContract.toString());

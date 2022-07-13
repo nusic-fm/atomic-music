@@ -11,7 +11,7 @@ async function main() {
   //https://gateway.pinata.cloud/ipfs/QmNZucC5ZvPxsoEr3Zw88HoR1MorEFPCojTV1kYfr9w59K
   //https://gateway.pinata.cloud/ipfs/QmXDP6iiTwFTUEWaV8NizypmNnnXfbqvgjB3hQnUygnBQB // new one
 
-  const atomicMusicNFT:AtomicMusicNFT = await AtomicMusicNFT.deploy("YATTA","YNFT","https://gateway.pinata.cloud/ipfs/QmXDP6iiTwFTUEWaV8NizypmNnnXfbqvgjB3hQnUygnBQB/");
+  const atomicMusicNFT:AtomicMusicNFT = await AtomicMusicNFT.deploy("MFPNFT","MFP","https://gateway.pinata.cloud/ipfs/QmQ89xevkyDy1Nn99ennYEYRhXoswBkfafozqNdYhQT4PN/");
   //const atomicMusicNFT:AtomicMusicNFT = await AtomicMusicNFT.deploy("TempMUSIC","TMNFT","https://gateway.pinata.cloud/ipfs/QmNZucC5ZvPxsoEr3Zw88HoR1MorEFPCojTV1kYfr9w59K/");
   await atomicMusicNFT.deployed();
   //"AtomicMusicNFT","AMNFT"
