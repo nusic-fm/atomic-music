@@ -128,11 +128,11 @@ contract AtomicMusicNFT is ERC721Pausable, Ownable {
         return false;
     }
 
-    function setManager(address _manager) public {
+    function setManager(address _manager) public onlyOwner{
         manager = _manager;
     }
     
-    function setAdmin(address _admin) public {
+    function setAdmin(address _admin) public onlyOwner{
         admin = _admin;
     }
 
@@ -155,7 +155,7 @@ contract AtomicMusicNFT is ERC721Pausable, Ownable {
         return _exists(tokenId);
     }
     
-    function setPrice(uint256 tokenId, uint256 parentTokenId, uint256 price) public onlyOwner{
+    function setPrice(uint256 tokenId, uint256 parentTokenId, uint256 price) public onlyOwner {
         bool found = false;
         for (uint256 i = 0; i < _childrenMetadata[parentTokenId].length; i++) {
             if(_childrenMetadata[parentTokenId][i].tokenId == tokenId) {
@@ -167,7 +167,7 @@ contract AtomicMusicNFT is ERC721Pausable, Ownable {
         require(found, "Parent and Child token id mismatch");
     }
 
-    function setRootPrice(uint256 rootTokenId, uint256 price) public onlyOwner{
+    function setRootPrice(uint256 rootTokenId, uint256 price) public onlyOwner {
         require(!_rootTokenInfo[rootTokenId].isMinted, "Token already minted");
         require(_rootTokens[rootTokenId], "Not a Root tokens");
         _rootTokenInfo[rootTokenId].price = price;
