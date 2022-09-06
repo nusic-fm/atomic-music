@@ -21,31 +21,26 @@ contract AtomicMusicMCNFT is ERC721Pausable, Ownable {
     mapping(uint256 => TokenInfo[]) public _childrenMetadata;
     mapping(uint256 => TokenInfo) public _rootTokenInfo;
     mapping(uint256 => bool) public _rootTokens;
+
+    mapping(uint256 => string) private _tokenURIs;
     
     string public baseURI;
-    string public defaultURI;
     uint256 public totalTokens;
     uint256 public totalMinted;
 
     address public admin;
     address public manager;
 
-    constructor(string memory _name, string memory _symbol, string memory _defaultURI) ERC721(_name,_symbol){
-        defaultURI = _defaultURI;
-        baseURI = _defaultURI;
+    constructor(string memory _name, string memory _symbol) ERC721(_name,_symbol){
     }
 
     function _baseURI() internal view virtual override returns (string memory) {
         return baseURI;
     }
 
-    function setBaseURI(string memory URI) public onlyOwner {
-		baseURI = URI;
-	}
-
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
         require(_exists(tokenId), "Token does not exists");
-        return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString(),".json")) : defaultURI;
+        return _tokenURIs[tokenId];
     }
 
     function childrenMetadataOf (uint256 parentTokenId) internal view returns (TokenInfo[] memory) {
@@ -72,32 +67,17 @@ contract AtomicMusicMCNFT is ERC721Pausable, Ownable {
         return _childrenMetadata[tokenId];
     }
 
-    
-    /*
-    function mintRoot(address _to, uint256 tokenId) public payable {
-        require(tokenId != 0, "Not mintable");
-        require(!_exists(tokenId), "Token already minted");
-        require(_rootTokens[tokenId], "Token Id is not for Root token");
-        require(!isChildMinted(tokenId), "Child has already been minted for this token");
-        //require(msg.value >= minPrice && msg.value <= maxPrice, "Insufficient Funds Sent" );
-        require(msg.value == _rootTokenInfo[tokenId].price, "Insufficient Funds Sent");
-        _safeMint(_to, tokenId);
-        if(_rootTokens[tokenId]) {
-            _rootTokenInfo[tokenId].isMinted = true;
-        }
-        totalMinted++;
-    }
-    */
-    function mint(uint256 tokenId, uint256 parentTokenId) public payable {
+    function mint(address _to, uint256 tokenId, uint256 parentTokenId, string memory uri) public payable {
         require(tokenId != 0, "Not mintable");
         require(!_exists(tokenId), "Token already minted");
         require(!_exists(parentTokenId), "Parent token already minted");
-
+        require(msg.sender == 0xdAb1a1854214684acE522439684a145E62505233,"This function is for Crossmint only.");
         for (uint256 i = 0; i < _childrenMetadata[parentTokenId].length; i++) {
             if(_childrenMetadata[parentTokenId][i].tokenId == tokenId) {
                 require(msg.value == _childrenMetadata[parentTokenId][i].price, "Insufficient Funds Sent");
-                _safeMint(msg.sender, tokenId);
+                _safeMint(_to, tokenId);
                 _childrenMetadata[parentTokenId][i].isMinted = true;
+                _tokenURIs[tokenId] = uri;
                 totalMinted++;
                 return;
             }
@@ -180,5 +160,10 @@ contract AtomicMusicMCNFT is ERC721Pausable, Ownable {
             }
         }
         revert("Parent and Child token id mismatch");
-    }    
+    }  
+
+    function setTokenURI(uint256 tokenId, string memory uri) public onlyOwner {
+        require(_exists(tokenId), "Token does not exists");
+        _tokenURIs[tokenId] = uri;
+    }  
 }
