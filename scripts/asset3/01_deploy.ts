@@ -9,7 +9,8 @@ async function main() {
 
   const AtomicMusicMCNFT:AtomicMusicMCNFT__factory = await ethers.getContractFactory("AtomicMusicMCNFT");
 
-  const atomicMusicMCNFT:AtomicMusicMCNFT = await AtomicMusicMCNFT.deploy("MCNFT","MCNFT","https://gateway.pinata.cloud/ipfs/QmQ89xevkyDy1Nn99ennYEYRhXoswBkfafozqNdYhQT4PN/");
+  //https://gateway.pinata.cloud/ipfs/QmQ89xevkyDy1Nn99ennYEYRhXoswBkfafozqNdYhQT4PN/
+  const atomicMusicMCNFT:AtomicMusicMCNFT = await AtomicMusicMCNFT.deploy("MCNFT","MCNFT");
   await atomicMusicMCNFT.deployed();
   console.log("AtomicMusicNFT deployed to:", atomicMusicMCNFT.address);
   
