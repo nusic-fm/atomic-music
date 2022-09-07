@@ -13,6 +13,7 @@ dotenv.config();
 // go to Account Details > Export Private Key
 // Be aware of NEVER putting real Ether into testing accounts
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
+const ALCHEMY_KEY = process.env.ALCHEMY_KEY;
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -67,18 +68,25 @@ export default {
     moonbase: {
       url: 'https://rpc.api.moonbase.moonbeam.network',
       chainId: 1287, // (hex: 0x507),
+      //accounts: [`0x${PRIVATE_KEY}`]
       accounts: [`0x${PRIVATE_KEY}`]
-    }
+    },
+    moonriver: {
+      url: 'https://rpc.api.moonriver.moonbeam.network',
+      chainId: 1285, // (hex: 0x507),
+      //accounts: [`0x${PRIVATE_KEY}`]
+      accounts: [`0x${PRIVATE_KEY}`]
+    },
     /*
     ropsten: {
       url: `https://ropsten.infura.io/v3/${INFURA_KEY}`,
       accounts: [`0x${ROPSTEN_PRIVATE_KEY}`]
     },*/
-    /*
+    
     rinkeby: {
       url: `https://eth-rinkeby.alchemyapi.io/v2/${ALCHEMY_KEY}`,
-      accounts: [`0x${RINKEBY_PRIVATE_KEY}`]
-    },*/
+      accounts: [`0x${PRIVATE_KEY}`]
+    },
     /*
     kovan: {
       url: `https://kovan.infura.io/v3/${INFURA_KEY}`,
