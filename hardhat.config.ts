@@ -87,6 +87,10 @@ export default {
       url: `https://eth-rinkeby.alchemyapi.io/v2/${ALCHEMY_KEY}`,
       accounts: [`0x${PRIVATE_KEY}`]
     },
+    matic: {
+      url: "https://matic-mumbai.chainstacklabs.com",
+      accounts: [`0x${PRIVATE_KEY}`]
+    }
     /*
     kovan: {
       url: `https://kovan.infura.io/v3/${INFURA_KEY}`,
