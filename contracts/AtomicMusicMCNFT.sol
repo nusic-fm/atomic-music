@@ -12,6 +12,7 @@ contract AtomicMusicMCNFT is ERC721Pausable, Ownable {
     using Strings for uint256;
 
     struct TokenInfo {
+        string id;
         uint256 tokenId;
         uint256 parentTokenId;
         bool isMinted;
@@ -30,6 +31,8 @@ contract AtomicMusicMCNFT is ERC721Pausable, Ownable {
 
     address public admin;
     address public manager;
+
+    event Minted(address indexed to, string id, uint256 parentTokenId, uint256 tokenId);
 
     constructor(string memory _name, string memory _symbol) ERC721(_name,_symbol){
     }
@@ -51,6 +54,7 @@ contract AtomicMusicMCNFT is ERC721Pausable, Ownable {
     function addChildMetadata(uint256 rootTokenId, uint256 rootTokenPrice, TokenInfo[] memory _childrens) public onlyOwner {
         _rootTokens[rootTokenId] = true;
         _rootTokenInfo[rootTokenId] = TokenInfo({
+            id:"root",
             tokenId:rootTokenId,
             parentTokenId: 0,
             isMinted: false,
@@ -67,18 +71,23 @@ contract AtomicMusicMCNFT is ERC721Pausable, Ownable {
         return _childrenMetadata[tokenId];
     }
 
-    function mint(address _to, uint256 tokenId, uint256 parentTokenId, string memory uri) public payable {
+    function mint(address _to, uint256 tokenId, uint256 parentTokenId, string memory _id, string memory uri) public payable {
         require(tokenId != 0, "Not mintable");
         require(!_exists(tokenId), "Token already minted");
         require(!_exists(parentTokenId), "Parent token already minted");
-        require(msg.sender == 0xdAb1a1854214684acE522439684a145E62505233,"This function is for Crossmint only.");
+        // On Ethereum All
+        //require(msg.sender == 0xdAb1a1854214684acE522439684a145E62505233,"This function is for Crossmint only.");
+        // On Polygon Testnet
+        require(msg.sender == 0xDa30ee0788276c093e686780C25f6C9431027234, "This function is for Crossmint only.");
         for (uint256 i = 0; i < _childrenMetadata[parentTokenId].length; i++) {
             if(_childrenMetadata[parentTokenId][i].tokenId == tokenId) {
                 require(msg.value == _childrenMetadata[parentTokenId][i].price, "Insufficient Funds Sent");
                 _safeMint(_to, tokenId);
                 _childrenMetadata[parentTokenId][i].isMinted = true;
+                _childrenMetadata[parentTokenId][i].id = _id;
                 _tokenURIs[tokenId] = uri;
                 totalMinted++;
+                emit Minted(_to, _id, parentTokenId, tokenId);
                 return;
             }
         }
