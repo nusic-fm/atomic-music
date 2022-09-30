@@ -12,9 +12,9 @@ async function main() {
   const atomicMusicMCNFT:AtomicMusicMCNFT = await AtomicMusicMCNFT.attach(addresses.nftAddress);
 
   //https://gateway.pinata.cloud/ipfs/QmQ89xevkyDy1Nn99ennYEYRhXoswBkfafozqNdYhQT4PN/
-  const amount = ethers.utils.parseEther("1")
+  const amount = ethers.utils.parseEther("0.01")
   const txt = await atomicMusicMCNFT.mint(
-            owner.address, 14,0, 
+            owner.address, 4,0, "myid1",
             "https://gateway.pinata.cloud/ipfs/QmQ89xevkyDy1Nn99ennYEYRhXoswBkfafozqNdYhQT4PN/14.json", 
             {value: amount});
   console.log("mint child txt.hash = ",txt.hash);

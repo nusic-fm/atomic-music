@@ -3,13 +3,15 @@ import { ethers } from 'hardhat';
 const addresses = require("./address.json");
 //import tokenData from '../../data/child-info-data.json';
 import { AtomicMusicMCNFT, AtomicMusicMCNFT__factory } from '../../typechain';
-import tokenData from '../../data/mc-child-info-data-prices.json'; // for production
+//import tokenData from '../../data/mc-child-info-data-prices.json'; // for production
+import tokenData from '../../data/mc-child-info-small-prices-.json'; 
 /*
 * Main deployment script to deploy all the relevent contracts
 */
 let atomicMusicMCNFT:AtomicMusicMCNFT;
 
 interface TokenInfo {
+  id: string;
   tokenId: number;
   parentTokenId: number;
   isMinted:boolean;
@@ -30,6 +32,7 @@ async function main() {
     for (let j = 0; j < tokenRoots[i].children.length; j++) {
       let child = tokenRoots[i].children[j];
       tokenInfo.push({
+        id: "",
         tokenId: child.tokenId,
         parentTokenId: tokenRoots[i].tokenId,
         isMinted: false, 
