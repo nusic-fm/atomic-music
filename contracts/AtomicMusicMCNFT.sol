@@ -28,6 +28,7 @@ contract AtomicMusicMCNFT is ERC721Pausable, Ownable {
     string public baseURI;
     uint256 public totalTokens;
     uint256 public totalMinted;
+    uint256 public mintBlock = 15753122;
 
     address public admin;
     address public manager;
@@ -73,6 +74,7 @@ contract AtomicMusicMCNFT is ERC721Pausable, Ownable {
 
     function mint(address _to, uint256 tokenId, uint256 parentTokenId, string memory _id, string memory uri) public payable {
         require(tokenId != 0, "Not mintable");
+        require(block.number >= mintBlock, "Mint not started");
         require(!_exists(tokenId), "Token already minted");
         require(!_exists(parentTokenId), "Parent token already minted");
         // On Ethereum All
@@ -174,5 +176,10 @@ contract AtomicMusicMCNFT is ERC721Pausable, Ownable {
     function setTokenURI(uint256 tokenId, string memory uri) public onlyOwner {
         require(_exists(tokenId), "Token does not exists");
         _tokenURIs[tokenId] = uri;
+    } 
+
+    function setMintBlock(uint256 _mintBlock) public onlyOwner {
+        require(_mintBlock > block.number , "Older block provided");
+        mintBlock = _mintBlock;
     }  
 }
