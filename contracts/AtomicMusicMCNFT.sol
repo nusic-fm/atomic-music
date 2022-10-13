@@ -5,9 +5,10 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/common/ERC2981.sol";
 import "hardhat/console.sol";
 
-contract AtomicMusicMCNFT is ERC721Pausable, Ownable {
+contract AtomicMusicMCNFT is ERC721Pausable, ERC2981, Ownable {
     using Address for address;
     using Strings for uint256;
 
@@ -28,7 +29,7 @@ contract AtomicMusicMCNFT is ERC721Pausable, Ownable {
     string public baseURI;
     uint256 public totalTokens;
     uint256 public totalMinted;
-    uint256 public mintBlock = 15753122;
+    uint256 public mintBlock = 15744776;
 
     address public admin;
     address public manager;
@@ -36,6 +37,10 @@ contract AtomicMusicMCNFT is ERC721Pausable, Ownable {
     event Minted(address indexed to, string id, uint256 parentTokenId, uint256 tokenId);
 
     constructor(string memory _name, string memory _symbol) ERC721(_name,_symbol){
+    }
+
+    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC2981,ERC721) returns (bool) {
+        return interfaceId == type(ERC2981).interfaceId || super.supportsInterface(interfaceId);
     }
 
     function _baseURI() internal view virtual override returns (string memory) {
@@ -78,9 +83,9 @@ contract AtomicMusicMCNFT is ERC721Pausable, Ownable {
         require(!_exists(tokenId), "Token already minted");
         require(!_exists(parentTokenId), "Parent token already minted");
         // On Ethereum All
-        //require(msg.sender == 0xdAb1a1854214684acE522439684a145E62505233,"This function is for Crossmint only.");
+        require(msg.sender == 0xdAb1a1854214684acE522439684a145E62505233,"This function is for Crossmint only.");
         // On Polygon Testnet
-        require(msg.sender == 0xDa30ee0788276c093e686780C25f6C9431027234, "This function is for Crossmint only.");
+        //require(msg.sender == 0xDa30ee0788276c093e686780C25f6C9431027234, "This function is for Crossmint only.");
         for (uint256 i = 0; i < _childrenMetadata[parentTokenId].length; i++) {
             if(_childrenMetadata[parentTokenId][i].tokenId == tokenId) {
                 require(msg.value == _childrenMetadata[parentTokenId][i].price, "Insufficient Funds Sent");
@@ -182,4 +187,21 @@ contract AtomicMusicMCNFT is ERC721Pausable, Ownable {
         require(_mintBlock > block.number , "Older block provided");
         mintBlock = _mintBlock;
     }  
+
+    // ERC2981
+    function setDefaultRoyalty(address receiver, uint96 feeNumerator) public onlyOwner  {
+        _setDefaultRoyalty(receiver, feeNumerator);
+    }
+
+    function deleteDefaultRoyalty() public onlyOwner{
+        _deleteDefaultRoyalty();
+    }
+
+    function setTokenRoyalty(uint256 tokenId, address receiver, uint96 feeNumerator) public onlyOwner {
+        _setTokenRoyalty(tokenId,receiver,feeNumerator);
+    }
+
+    function resetTokenRoyalty(uint256 tokenId) public onlyOwner {
+        _resetTokenRoyalty(tokenId);
+    }
 }
