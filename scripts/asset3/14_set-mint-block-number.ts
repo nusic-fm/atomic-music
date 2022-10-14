@@ -1,3 +1,4 @@
+import { BigNumber } from 'ethers';
 import { ethers } from 'hardhat';
 import { AtomicMusicMCNFT, AtomicMusicMCNFT__factory } from '../../typechain';
 const addresses = require("./address.json");
@@ -11,7 +12,8 @@ async function main() {
   const AtomicMusicMCNFT:AtomicMusicMCNFT__factory = await ethers.getContractFactory("AtomicMusicMCNFT");
   const atomicMusicMCNFT:AtomicMusicMCNFT = await AtomicMusicMCNFT.attach(addresses.nftAddress);
 
-  const txt = await atomicMusicMCNFT.setMintBlock(15753122);
+  //const txt = await atomicMusicMCNFT.setMintBlock(15753122);
+  const txt = await atomicMusicMCNFT.setMintBlock(15744745);
   console.log("setMintBlock txt.hash = ",txt.hash);
   const txtReceipt = await txt.wait();
   console.log("setMintBlock txt.hash = ",txtReceipt);

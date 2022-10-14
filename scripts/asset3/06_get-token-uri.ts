@@ -11,7 +11,7 @@ async function main() {
   const AtomicMusicMCNFT:AtomicMusicMCNFT__factory = await ethers.getContractFactory("AtomicMusicMCNFT");
   const atomicMusicMCNFT:AtomicMusicMCNFT = await AtomicMusicMCNFT.attach(addresses.nftAddress);
 
-  const tokenURI = await atomicMusicMCNFT.tokenURI(2);
+  const tokenURI = await atomicMusicMCNFT.tokenURI(12);
   console.log("tokenURI = ",tokenURI);
 
 }

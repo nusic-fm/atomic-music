@@ -4,7 +4,8 @@ const addresses = require("./address.json");
 //import tokenData from '../../data/child-info-data.json';
 import { AtomicMusicMCNFT, AtomicMusicMCNFT__factory } from '../../typechain';
 //import tokenData from '../../data/mc-child-info-data-prices.json'; // for production
-import tokenData from '../../data/mc-child-info-small-prices-.json'; 
+//import tokenData from '../../data/mc-child-info-small-prices.json'; 
+import tokenData from '../../data/mc-child-info-zero-prices.json'; 
 /*
 * Main deployment script to deploy all the relevent contracts
 */
