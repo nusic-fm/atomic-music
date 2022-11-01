@@ -3,6 +3,7 @@ import { ethers } from 'hardhat';
 import { AtomicMusicNFT, AtomicMusicNFT__factory } from '../../typechain';
 const addresses = require("./address.json");
 import tokenData from '../../data/child-info-data.json';
+//import tokenData from '../../data/child-info-data-prices.json'; // for production
 /*
 * Main deployment script to deploy all the relevent contracts
 */
