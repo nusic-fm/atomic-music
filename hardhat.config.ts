@@ -5,6 +5,7 @@ import '@nomiclabs/hardhat-ethers'
 import dotenv from 'dotenv';
 import 'hardhat-contract-sizer';
 import "@nomiclabs/hardhat-etherscan";
+import "hardhat-gas-reporter";
 
 dotenv.config();
 
@@ -14,6 +15,8 @@ dotenv.config();
 // Be aware of NEVER putting real Ether into testing accounts
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 const ALCHEMY_KEY = process.env.ALCHEMY_KEY;
+//const PROD_PRIVATE_KEY = process.env.PROD_PRIVATE_KEY;
+//const ALCHEMY_MAINNET_KEY = process.env.ALCHEMY_MAINNET_KEY;
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -62,6 +65,7 @@ export default {
     sources: "contracts",
   },
   networks: {
+    /*
     localhost: {
       url:' http://127.0.0.1:8545/'
     },
@@ -77,12 +81,13 @@ export default {
       //accounts: [`0x${PRIVATE_KEY}`]
       accounts: [`0x${PRIVATE_KEY}`]
     },
+    */
     /*
     ropsten: {
       url: `https://ropsten.infura.io/v3/${INFURA_KEY}`,
       accounts: [`0x${ROPSTEN_PRIVATE_KEY}`]
     },*/
-    
+    /*
     rinkeby: {
       url: `https://eth-rinkeby.alchemyapi.io/v2/${ALCHEMY_KEY}`,
       accounts: [`0x${PRIVATE_KEY}`]
@@ -90,11 +95,16 @@ export default {
     matic: {
       url: "https://matic-mumbai.chainstacklabs.com",
       accounts: [`0x${PRIVATE_KEY}`]
-    }
+    },
+    */
+    goerli: {
+      url: `https://eth-goerli.g.alchemy.com/v2/${ALCHEMY_KEY}`,
+      accounts: [`0x${PRIVATE_KEY}`]
+    },
     /*
-    kovan: {
-      url: `https://kovan.infura.io/v3/${INFURA_KEY}`,
-      accounts: [`0x${KOVAN_PRIVATE_KEY}`]
+    mainnet: {
+      url: `https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_MAINNET_KEY}`,
+      accounts: [`0x${PROD_PRIVATE_KEY}`]
     }*/
   },
   contractSizer: {
@@ -107,5 +117,10 @@ export default {
     // Your API key for Etherscan
     // Obtain one at https://etherscan.io/
     apiKey: process.env.ETHERSCAN_API_KEY
+    //apiKey: process.env.POLYSCAN_API_KEY
+  },
+  gasReporter: {
+    currency: 'USD',
+    gasPrice: 21
   }
 };
