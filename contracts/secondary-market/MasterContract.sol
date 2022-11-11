@@ -31,9 +31,10 @@ contract MasterContract is Ownable {
         _;
     }
 
-    constructor(address _manager, address _wethAddress){
+    constructor(address _manager, address _wethAddress, address _nftCollectionAddress){
         manager = _manager;
         WETH = ERC20(_wethAddress);
+        nftCollection = ERC721(_nftCollectionAddress);
     }
 
     function setManager(address _manager) public onlyOwner{
@@ -50,8 +51,8 @@ contract MasterContract is Ownable {
         marketPlaceShare+=share;
 
 
-       bool hasApproval = nftCollection.isApprovedForAll(seller, address(this));
-       require(hasApproval,"Marketplace is has no approval token transfer");
+       address approvedOperator = nftCollection.getApproved(tokenId);
+       require(approvedOperator != address(0) &&  approvedOperator == address(this),"Marketplace is has no approval token transfer");
 
        nftCollection.safeTransferFrom(seller, buyer, tokenId);
        //nftCollection.approve(to, tokenId);
@@ -60,7 +61,7 @@ contract MasterContract is Ownable {
     }
 
     function calculateMarketPlaceShare(uint256 _amount) internal view returns (uint256){
-        return _amount * marketPlaceShare/1000;
+        return _amount * marketPlaceShare/10000;
     }
     /*
     function acceptTokenOffer(address buyer, address seller, uint256 amount, uint256 tokenId) public onlyOwnerOrManager {
