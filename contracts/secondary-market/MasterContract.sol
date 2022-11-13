@@ -24,7 +24,7 @@ contract MasterContract is Ownable {
     mapping(address => uint256) public userBalance;
     uint256 public marketPlanceBalance;
 
-    event offerAccepted(address buyer, address seller, uint256 amount, uint256 mareketPlaceShare, uint256 tokenId);
+    event OfferAccepted(address buyer, address seller, uint256 amount, uint256 mareketPlaceShare, uint256 tokenId);
 
     modifier onlyOwnerOrManager() {
         require((owner() == msg.sender) || (manager == msg.sender), "Caller needs to Owner or Manager");
@@ -56,29 +56,16 @@ contract MasterContract is Ownable {
 
        nftCollection.safeTransferFrom(seller, buyer, tokenId);
        //nftCollection.approve(to, tokenId);
-       emit offerAccepted(buyer, seller, amount, share, tokenId);
+       emit OfferAccepted(buyer, seller, amount, share, tokenId);
 
     }
 
     function calculateMarketPlaceShare(uint256 _amount) internal view returns (uint256){
         return _amount * marketPlaceShare/10000;
     }
-    /*
-    function acceptTokenOffer(address buyer, address seller, uint256 amount, uint256 tokenId) public onlyOwnerOrManager {
-        uint256 allowance = WETH.allowance(buyer, address(this));
-        require(allowance >= amount,"Insufficient approval for funds");
 
-        bool success = WETH.transferFrom(buyer, address(this), amount);
-
-        (bool sent, ) = seller.call{value: gasCharge}("");
-        require(sent, "Failed to send Ether for gas");
-    }*/
-
-    fallback() external payable virtual {
-        //_fallback();
-    }
-
-    receive() external payable virtual {
-        //_fallback();
+    function withdraw() public onlyOwner {
+        require(manager != address(0),"NULL Address Provided");
+        WETH.transfer(manager, WETH.balanceOf(address(this)));
     }
 }
