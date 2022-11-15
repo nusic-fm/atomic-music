@@ -86,10 +86,10 @@ describe("Nusic Secondary Market Place", function () {
   });
 
   it("Transfer ETH for Gas in Wallets", async function () {
-    const [owner,addr1] = await ethers.getSigners();
+    const [owner,addr1,addr2] = await ethers.getSigners();
 
     for(let i=0;i<_accountList.length;i++) {
-      expect(await addr1.sendTransaction({
+      expect(await addr2.sendTransaction({
         to:_accountList[i].address,
         value: ethers.utils.parseEther("0.08")
       })).to.be.ok;
@@ -104,31 +104,43 @@ describe("Nusic Secondary Market Place", function () {
   });
 
   it("Approval of WTH by Buyer", async function () {
-    const [owner,addr1,addr2] = await ethers.getSigners();
+    const [owner,addr1,addr2,addr3] = await ethers.getSigners();
 
-    expect(await wethMock.transfer(addr2.address,ethers.utils.parseEther("2"))).to.be.ok;
-    expect(await wethMock.connect(addr2).approve(masterContract.address,ethers.utils.parseEther("1"))).to.be.ok;
-
-    //await masterContract.acceptTokenOffer(addr2.address,_accountList[0].address,ethers.utils.parseEther("0.2"),1);
-
-    /*
-    for(let i=0;i<_accountList.length;i++) {
-      expect(await nftMock.connect(_accountList[i]).approve(masterContract.address,(i+1))).to.be.ok;
-    }
-    */
+    expect(await wethMock.transfer(addr3.address,ethers.utils.parseEther("2"))).to.be.ok;
+    expect(await wethMock.connect(addr3).approve(masterContract.address,ethers.utils.parseEther("1"))).to.be.ok;
   });
 
-  it("Accept offer and transfer funds from buyer and token to buyer", async function () {
-    const [owner,addr1,addr2] = await ethers.getSigners();
+  it("Accept offer should be failed as called is not owner or manager", async function () {
+    const [owner,addr1,addr2,addr3] = await ethers.getSigners();
 
-    expect(await masterContract.acceptTokenOffer(addr2.address,_accountList[0].address,ethers.utils.parseEther("0.2"),1)).to.be.ok;
+    await expect(masterContract.connect(addr1).acceptTokenOffer(addr3.address,_accountList[0].address,ethers.utils.parseEther("0.2"),1)).to.be.revertedWith("Caller needs to Owner or Manager");
   });
 
+  it("Set manager should fail as caller in not owner", async function () {
+    const [owner,addr1,addr2,addr3] = await ethers.getSigners();
+
+    await expect(masterContract.connect(addr1).setManager(addr2.address)).to.be.revertedWith("Ownable: caller is not the owner");
+  });
+
+  it("Set Addr1 to manager of master contract successfully", async function () {
+    const [owner,addr1,addr2] = await ethers.getSigners();
+
+    expect(await masterContract.connect(owner).setManager(addr1.address)).to.be.ok;
+  });
+  
+  it("Addr1 Accept offer and transfer funds from buyer and token to buyer successfully", async function () {
+    const [owner,addr1,addr2,addr3] = await ethers.getSigners();
+
+    expect(await masterContract.connect(addr1).acceptTokenOffer(addr3.address,_accountList[0].address,ethers.utils.parseEther("0.2"),1)).to.be.ok;
+  });
+  
   it("Check Token balance and MasterContract Balance", async function () {
     const [owner,addr1,addr2] = await ethers.getSigners();
 
     const userBalance = await masterContract.userBalance(_accountList[0].address);
+    const masterContractBalance = await masterContract.marketPlanceBalance();
     console.log("User Balance = ", userBalance.toString());
+    console.log("MasterContract Balance = ", masterContractBalance.toString());
   });
 
 });

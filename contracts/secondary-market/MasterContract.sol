@@ -48,7 +48,7 @@ contract MasterContract is Ownable {
 
         uint256 share = calculateMarketPlaceShare(amount);
         userBalance[seller] = amount - share;
-        marketPlaceShare+=share;
+        marketPlanceBalance+=share;
 
 
        address approvedOperator = nftCollection.getApproved(tokenId);
