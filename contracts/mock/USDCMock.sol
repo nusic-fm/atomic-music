@@ -3,9 +3,6 @@ pragma solidity >=0.4.22 <0.9.0;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-/**
- * Main ERC20 Token for Panacloud which will be used for Platform Governance DAO
- */
 contract USDCMock is ERC20, Ownable {
 
     constructor() ERC20("Mock USDC", "MUSDC") {
