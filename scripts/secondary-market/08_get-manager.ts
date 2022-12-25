@@ -13,10 +13,8 @@ async function main() {
   console.log("MasterContract Address to:", masterContract.address);
 
 
-  const txt = await masterContract.setManager("0x3dE8e079a1B3e2196539aA16890DBA2B7682b53A");
-  console.log("masterContract.setManager txt.hash = ",txt.hash);
-  const txtReceipt = await txt.wait();
-  //console.log("wethMock.transfer txt.hash = ",txtReceipt);
+  const managerAddress = await masterContract.manager();
+  console.log("managerAddress = ",managerAddress);
 
 }
 
